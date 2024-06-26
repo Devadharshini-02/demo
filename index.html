@@ -517,16 +517,16 @@ const selectPrize = () => {
   celebrationDiv.classList.add("celebration");
   createConfetti(celebrationDiv);
 
-  const closeButton = document.createElement("button");
-  closeButton.textContent = "Close";
-  closeButton.addEventListener("click", () => {
-    modal.style.display = "none";
-    celebrationDiv.innerHTML = "";
-  });
+  // const closeButton = document.createElement("button");
+  // closeButton.textContent = "Close";
+  // closeButton.addEventListener("click", () => {
+  //   modal.style.display = "none";
+  //   celebrationDiv.innerHTML = "";
+  // });
 
   modalContent.appendChild(winText);
   modalContent.appendChild(celebrationDiv);
-  modalContent.appendChild(closeButton);
+  // modalContent.appendChild(closeButton);
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
 
