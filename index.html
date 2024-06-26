@@ -90,6 +90,9 @@
     </body>
 </html>
 <style>
+
+    
+    
     @import url("https://fonts.googleapis.com/css2?family=Girassol&display=swap");
 
 * {
@@ -168,12 +171,12 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  padding: 0 calc(var(--size) / 6) 0 calc(var(--size) / 20);
+  padding: 0 calc(var(--size) / 4) 0 calc(var(--size) / 80);
   width: 50%;
-  height: 50%;
+  
   transform-origin: center right;
   transform: rotate(var(--rotate));
-  user-select: none;
+  user-select:none;
 }
 
 .cap {
@@ -293,9 +296,7 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   position: relative;
-  display: flex;
 }
-
 
 
 .confetti {
@@ -371,23 +372,18 @@ const prizes = [
     color: "hsl(173 58% 39%)",
     
   },
-  { 
-    text: "Better Luck Next Time",
-    color: "hsl(43 74% 66%)",
-    
-  },
   {
     text: "T Shirt",
     color: "hsl(27 87% 67%)",
     
   },
   {
-    text: "Umbrella",
+    text: "Rain Shield ",
     color: "hsl(12 76% 61%)",
     
   },
   {
-    text: "Pen",
+    text: "Art Stick",
     color: "hsl(350 60% 52%)",
     
   },
@@ -489,40 +485,44 @@ const selectPrize = () => {
   prizeNodes[selected].classList.add(selectedClass);
   reaper.dataset.reaction = prizeNodes[selected].dataset.reaction;
 
-  // Display the congratulatory message
-  const prize = prizes[selected];
-  const modal = document.createElement("div");
-  modal.classList.add("modal");
+  // Check if the prize is "Spin Again"
+  if (prizes[selected].text !== "Spin Again") {
+    // Display the congratulatory message
+    const prize = prizes[selected];
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
 
-  const modalContent = document.createElement("div");
-  modalContent.classList.add("modal-content");
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
 
-  const winText = document.createElement("div.h2");
-  winText.textContent = `Congratulations! You won a ${prize.text}.`;
+    const winText = document.createElement("div");
+    winText.classList.add("h2");
+    winText.textContent = `Congrats! You won a ${prize.text}.`;
 
-  const celebrationDiv = document.createElement("div");
-  celebrationDiv.classList.add("celebration");
-  createConfetti(celebrationDiv);
+    const celebrationDiv = document.createElement("div");
+    celebrationDiv.classList.add("celebration");
+    createConfetti(celebrationDiv);
 
-  // const closeButton = document.createElement("button");
-  // closeButton.textContent = "Close";
-  // closeButton.addEventListener("click", () => {
-  //   modal.style.display = "none";
-  //   celebrationDiv.innerHTML = "";
-  // });
+    // const closeButton = document.createElement("button");
+    // closeButton.textContent = "Close";
+    // closeButton.addEventListener("click", () => {
+    //   modal.style.display = "none";
+    //   celebrationDiv.innerHTML = "";
+    // });
 
-  modalContent.appendChild(winText);
-  modalContent.appendChild(celebrationDiv);
-  // modalContent.appendChild(closeButton);
-  modal.appendChild(modalContent);
-  document.body.appendChild(modal);
+    modalContent.appendChild(winText);
+    modalContent.appendChild(celebrationDiv);
+    // modalContent.appendChild(closeButton);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
 
-  modal.style.display = "block";
+    modal.style.display = "block";
 
-  setTimeout(() => {
-    modal.style.display = "none";
-    celebrationDiv.innerHTML = "";
-  }, 5000);
+    setTimeout(() => {
+      modal.style.display = "none";
+      celebrationDiv.innerHTML = "";
+    }, 5000);
+  }
 };
 
 function createConfetti(container) {
