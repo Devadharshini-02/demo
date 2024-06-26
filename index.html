@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="deal-wheel">
+        <ul class="spinner"></ul>
+        <figure class="cap">
+          <!-- Grim reaper SVG import -->
+         
+          <svg class="grim-reaper" data-reaction="resting" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 582 653">
+            <defs>
+              <clipPath id="clip-path">
+                <circle class="cls-1" cx="295.6" cy="286.3" r="286.3" />
+              </clipPath>
+              <clipPath id="clip-path-2">
+                <path class="cls-1" d="M460 250c0 130-126 222-151 209-39-22-194-110-194-239S280 54 356 54c33 1 104 66 104 196z" />
+              </clipPath>
+              <clipPath id="clip-path-3">
+                <path class="cls-1" d="M122 426l-100 7s28 161 167 156c37-2 69-27 66-31s-28 13-71-13c-58-35-62-119-62-119z" />
+              </clipPath>
+              <style>
+                .cls-1,
+                .cls-17 {
+                  fill: none
+                }
+          
+                .cls-4 {
+                  fill: #141414
+                }
+          
+                .cls-5 {
+                  fill: #111010
+                }
+          
+                .cls-6 {
+                  fill: #fff
+                }
+          
+                .cls-7 {
+                  fill: #5c382b
+                }
+          
+                .cls-9 {
+                  fill: #232323
+                }
+          
+                .cls-15 {
+                  fill: #2d221e
+                }
+          
+                .cls-16 {
+                  fill: #4f2610;
+                  opacity: .6;
+                }
+          
+                .cls-17 {
+                  stroke: #9b8029;
+                  stroke-miterlimit: 10;
+                  stroke-width: 2.5px
+                }
+          
+                .cls-18 {
+                  fill: #a7a9ad
+                }
+          
+                .cls-20 {
+                  fill: #fafafa
+                }
+              </style>
+            </defs>
+            <circle id="BG" cx="295.6" cy="286.3" r="286.3" fill="#fff" />
+           
+            <image x="15" y="2" width="600" height="560" href="image.png" />
+          </svg>
+        </figure>
+        <div class="ticker"></div>
+        <button class="btn-spin">Spin the wheel</button>
+      </div>
+      <div id="winModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 id="winText"></h2>
+          <div id="celebration"></div>
+        </div>
+      </div>
+    </body>
+</html>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Girassol&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #eaac0f, #92fef7);
+            margin: 0;
+        }
+
+.deal-wheel {
+  --size: clamp(250px, 80vmin, 700px);
+  --lg-hs: 0 3%;
+  --lg-stop: 50%;
+  --lg: linear-gradient(
+      hsl(var(--lg-hs) 0%) 0 var(--lg-stop),
+      hsl(var(--lg-hs) 20%) var(--lg-stop) 100%
+    );
+  
+  position: relative;
+  display: grid;
+  grid-gap: calc(var(--size) / 20);
+  align-items: center;
+  grid-template-areas:
+    "spinner"
+    "trigger";
+  font-family: "Girassol", sans-serif;
+  font-size: calc(var(--size) / 21);
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.deal-wheel > * {
+  grid-area: spinner;
+}
+
+.deal-wheel .btn-spin {
+  grid-area: trigger;
+  justify-self: center;
+}
+
+.spinner {
+  position: relative;
+  display: grid;
+  align-items: center;
+  grid-template-areas: "spinner";
+  width: var(--size);
+  height: var(--size);
+  transform: rotate(calc(var(--rotate, 25) * 1deg));
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 calc(var(--size) / 40) hsl(0deg 0% 0% / 0.06);
+}
+
+.spinner * {
+  grid-area: spinner;
+}
+
+.prize {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 calc(var(--size) / 6) 0 calc(var(--size) / 20);
+  width: 50%;
+  height: 50%;
+  transform-origin: center right;
+  transform: rotate(var(--rotate));
+  user-select: none;
+}
+
+.cap {
+  --cap-size: calc(var(--size) / 4);
+  position: relative;
+  justify-self: center;
+  width: var(--cap-size);
+  height: var(--cap-size);
+}
+
+/* Hide select dropdown from SVG import file */
+.cap select {
+  display: none;
+}
+
+.cap svg {
+  width: 100%;
+}
+
+.ticker {
+  position: relative;
+  left: calc(var(--size) / -15);
+  width: calc(var(--size) / 10);
+  height: calc(var(--size) / 20);
+  background: var(--lg);
+  z-index: 1;
+  clip-path: polygon(20% 0, 100% 50%, 20% 100%, 0% 50%);
+  transform-origin: center left;
+}
+
+.btn-spin {
+  color: hsl(0deg 0% 100%);
+  background: var(--lg);
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  text-transform: inherit;
+  padding: 0.9rem 2rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: opacity 200ms ease-out;
+}
+
+.btn-spin:focus {
+  outline-offset: 2px;
+}
+
+.btn-spin:active {
+  transform: translateY(1px);
+}
+
+.btn-spin:disabled {
+  cursor: progress;
+  opacity: 0.25;
+}
+
+/* Spinning animation */
+.is-spinning .spinner {
+  transition: transform 8s cubic-bezier(0.1, -0.01, 0, 1);
+}
+
+.is-spinning .ticker {
+  animation: tick 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes tick {
+  40% {
+    transform: rotate(-12deg);
+  }
+}
+
+/* Selected prize animation */
+.prize.selected .text {
+  color: white;
+  animation: selected 800ms ease;
+}
+
+@keyframes selected {
+  25% {
+    transform: scale(1.25);
+    text-shadow: 1vmin 1vmin 0 hsla(0 0% 0% / 0.1);
+  }
+  40% {
+    transform: scale(0.92);
+    text-shadow: 0 0 0 hsla(0 0% 0% / 0.2);
+  }
+  60% {
+    transform: scale(1.02);
+    text-shadow: 0.5vmin 0.5vmin 0 hsla(0 0% 0% / 0.1);
+  }
+  75% {
+    transform: scale(0.98);
+  }
+  85% {
+    transform: scale(1);
+  }
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background-color: lightgray;
+  margin: 10% auto;
+  padding: 30px;
+  border: none;
+  width: 40%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+}
+
+.confetti {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #f44336;
+  position: fixed;
+  animation: confetti 5s ease-in-out infinite;
+}
+
+.confetti:nth-child(2) {
+  background-color: #e91e63;
+}
+
+.confetti:nth-child(3) {
+  background-color: #9c27b0;
+}
+
+.confetti:nth-child(4) {
+  background-color: #673ab7;
+}
+
+.confetti:nth-child(5) {
+  background-color: #3f51b5;
+}
+
+.confetti:nth-child(6) {
+  background-color: #2196f3;
+}
+
+.confetti:nth-child(7) {
+  background-color: #03a9f4;
+}
+
+.confetti:nth-child(8) {
+  background-color: #00bcd4;
+}
+
+.confetti:nth-child(9) {
+  background-color: #009688;
+}
+
+.confetti:nth-child(10) {
+  background-color: #4caf50;
+}
+
+@keyframes confetti {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+</style>
+<script>
+      /**
+ * Prize data will space out evenly on the deal wheel based on the amount of items available.
+ * @param text [string] name of the prize
+ * @param color [string] background color of the prize
+ * @param reaction ['resting' | 'dancing' | 'laughing' | 'shocked'] Sets the reaper's animated reaction
+ */
+const prizes = [
+  {
+    text: "$5 Starbucks Card",
+    color: "hsl(197 30% 43%)",
+   
+  },
+  { 
+    text: "Arizon Swags",
+    color: "hsl(173 58% 39%)",
+    
+  },
+  { 
+    text: "Better Luck Next Time",
+    color: "hsl(43 74% 66%)",
+    
+  },
+  {
+    text: "T Shirt",
+    color: "hsl(27 87% 67%)",
+    
+  },
+  {
+    text: "Umbrella",
+    color: "hsl(12 76% 61%)",
+    
+  },
+  {
+    text: "Pen",
+    color: "hsl(350 60% 52%)",
+    
+  },
+  {
+    text: "Spin Again",
+    color: "hsl(91 43% 54%)",
+    
+  },
+  
+  
+];
+
+const wheel = document.querySelector(".deal-wheel");
+const spinner = wheel.querySelector(".spinner");
+const trigger = wheel.querySelector(".btn-spin");
+const ticker = wheel.querySelector(".ticker");
+const reaper = wheel.querySelector(".grim-reaper");
+const prizeSlice = 360 / prizes.length;
+const prizeOffset = Math.floor(180 / prizes.length);
+const spinClass = "is-spinning";
+const selectedClass = "selected";
+const spinnerStyles = window.getComputedStyle(spinner);
+let tickerAnim;
+let rotation = 0;
+let currentSlice = 0;
+let prizeNodes;
+
+const createPrizeNodes = () => {
+  prizes.forEach(({ text, color, reaction }, i) => {
+    const rotation = ((prizeSlice * i) * -1) - prizeOffset;
+    
+    spinner.insertAdjacentHTML(
+      "beforeend",
+      `<li class="prize" data-reaction=${reaction} style="--rotate: ${rotation}deg">
+        <span class="text">${text}</span>
+      </li>`
+    );
+  });
+};
+
+const createConicGradient = () => {
+  spinner.setAttribute(
+    "style",
+    `background: conic-gradient(
+      from -90deg,
+      ${prizes
+        .map(({ color }, i) => `${color} 0 ${(100 / prizes.length) * (prizes.length - i)}%`)
+        .reverse()
+      }
+    );`
+  );
+};
+
+
+const setupWheel = () => {
+  createConicGradient();
+  createPrizeNodes();
+  prizeNodes = wheel.querySelectorAll(".prize");
+};
+
+const spinertia = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const runTickerAnimation = () => {
+  // https://css-tricks.com/get-value-of-css-rotation-through-javascript/
+  const values = spinnerStyles.transform.split("(")[1].split(")")[0].split(",");
+  const a = values[0];
+  const b = values[1];  
+  let rad = Math.atan2(b, a);
+  
+  if (rad < 0) rad += (2 * Math.PI);
+  
+  const angle = Math.round(rad * (180 / Math.PI));
+  const slice = Math.floor(angle / prizeSlice);
+
+  if (currentSlice !== slice) {
+    ticker.style.animation = "none";
+    setTimeout(() => ticker.style.animation = null, 10);
+    currentSlice = slice;
+  }
+
+  tickerAnim = requestAnimationFrame(runTickerAnimation);
+};
+
+// const selectPrize = () => {
+//   const selected = Math.floor(rotation / prizeSlice);
+//   prizeNodes[selected].classList.add(selectedClass);
+//   reaper.dataset.reaction = prizeNodes[selected].dataset.reaction;
+   
+
+ 
+// };
+
+const selectPrize = () => {
+  const selected = Math.floor(rotation / prizeSlice);
+  prizeNodes[selected].classList.add(selectedClass);
+  reaper.dataset.reaction = prizeNodes[selected].dataset.reaction;
+
+  // Display the congratulatory message
+  const prize = prizes[selected];
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+
+  const modalContent = document.createElement("div");
+  modalContent.classList.add("modal-content");
+
+  const winText = document.createElement("h2");
+  winText.textContent = `Congratulations! You won a ${prize.text}.`;
+
+  const celebrationDiv = document.createElement("div");
+  celebrationDiv.classList.add("celebration");
+  createConfetti(celebrationDiv);
+
+  const closeButton = document.createElement("button");
+  closeButton.textContent = "Close";
+  closeButton.addEventListener("click", () => {
+    modal.style.display = "none";
+    celebrationDiv.innerHTML = "";
+  });
+
+  modalContent.appendChild(winText);
+  modalContent.appendChild(celebrationDiv);
+  modalContent.appendChild(closeButton);
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
+  modal.style.display = "block";
+
+  setTimeout(() => {
+    modal.style.display = "none";
+    celebrationDiv.innerHTML = "";
+  }, 5000);
+};
+
+function createConfetti(container) {
+  for (let i = 0; i < 100; i++) {
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+    container.appendChild(confetti);
+  }
+}
+trigger.addEventListener("click", () => {
+  if (reaper.dataset.reaction !== "resting") {
+    reaper.dataset.reaction = "resting";
+  }
+
+  trigger.disabled = true;
+  rotation = Math.floor(Math.random() * 360 + spinertia(2000, 5000));
+  prizeNodes.forEach((prize) => prize.classList.remove(selectedClass));
+  wheel.classList.add(spinClass);
+  spinner.style.setProperty("--rotate", rotation);
+  ticker.style.animation = "none";
+  runTickerAnimation();
+});
+
+spinner.addEventListener("transitionend", () => {
+  cancelAnimationFrame(tickerAnim);
+  trigger.disabled = false;
+  trigger.focus();
+  rotation %= 360;
+  selectPrize();
+  wheel.classList.remove(spinClass);
+  spinner.style.setProperty("--rotate", rotation);
+});
+
+setupWheel();
+
+</script>
