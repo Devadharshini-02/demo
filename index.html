@@ -296,21 +296,7 @@ body {
   display: flex;
 }
 
-.close {
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  cursor: pointer;
-}
 
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-}
 
 .confetti {
   width: 10px;
@@ -511,7 +497,7 @@ const selectPrize = () => {
   const modalContent = document.createElement("div");
   modalContent.classList.add("modal-content");
 
-  const winText = document.createElement("h2");
+  const winText = document.createElement("div.h2");
   winText.textContent = `Congratulations! You won a ${prize.text}.`;
 
   const celebrationDiv = document.createElement("div");
